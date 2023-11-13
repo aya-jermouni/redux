@@ -25,6 +25,7 @@ import ListTask from './components/ListTask';
 
 const App = () => {
   const [tasks, setTasks] = useState([]);
+  const [filterDone, setFilterDone] = useState('all'); // 'all', 'done', 'not-done'
 
   const addTask = (newTask) => {
     setTasks([...tasks, { id: tasks.length + 1, ...newTask }]);
@@ -38,12 +39,37 @@ const App = () => {
     );
   };
 
+  const editTask = (taskId, newDescription) => {
+    setTasks((prevTasks) =>
+      prevTasks.map((task) =>
+        task.id === taskId ? { ...task, description: newDescription } : task
+      )
+    );
+  };
+
+  const filterTasks = (task) => {
+    if (filterDone === 'all') return true;
+    return task.isDone === (filterDone === 'done');
+  };
+
   return (
     <div className="container mt-5">
       <div className="form-container">
         <AddTask addTask={addTask} />
       </div>
-      <ListTask tasks={tasks} toggleTaskStatus={toggleTaskStatus} />
+      <div className="mb-3">
+        <label className="form-label">Filter by status:</label>
+        <select
+          className="form-select"
+          value={filterDone}
+          onChange={(e) => setFilterDone(e.target.value)}
+        >
+          <option value="all">All</option>
+          <option value="done">Done</option>
+          <option value="not-done">Not Done</option>
+        </select>
+      </div>
+      <ListTask tasks={tasks.filter(filterTasks)} toggleTaskStatus={toggleTaskStatus} editTask={editTask} />
     </div>
   );
 };

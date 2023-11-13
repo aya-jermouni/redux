@@ -11,18 +11,23 @@
 
 /*new version of this ListeTask */
 
+// ListTask.js
 import React from 'react';
 import Task from './Task';
 
-const ListTask = ({ tasks, toggleTaskStatus }) => {
+const ListTask = ({ tasks, toggleTaskStatus, editTask }) => {
   return (
     <div className="task-container">
       {tasks.map((task) => (
-        <Task key={task.id} task={task} toggleTaskStatus={toggleTaskStatus} />
+        <Task
+          key={task.id}
+          task={task}
+          toggleTaskStatus={toggleTaskStatus}
+          editTask={editTask}
+        />
       ))}
     </div>
   );
 };
 
 export default ListTask;
-
